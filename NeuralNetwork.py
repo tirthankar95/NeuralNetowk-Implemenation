@@ -38,10 +38,10 @@ class NN:
 				self.A.append(Atmp);loss=0
 			if lossFunc=='Quadratic':
 				loss=(1/m)*( ((Ytr-self.A[layers-1])**2).sum() )
-				dZ=2*(self.A[layers-1]-Ytr)*self.A[layers-1]*(1-self.A[layers-1])
+				dZ=2*(self.A[layers-1]-Ytr)*getattr(NNH,"d"+layerInfo[i][1])(self.A[layers-1])
 			if lossFunc=='Log':
 				loss=-(1/m)*( (Ytr*np.log(self.A[layers-1])+(1-Ytr)*np.log(1-self.A[layers-1])).sum() )
-				dZ=self.A[layers-1]-Ytr
+				dZ=self.A[layers-1]-Ytr #You can afford to optimise directly rather than calling generalised func.
 			if j%10==0:
 				graph.append(loss)                
 			for i in range(layers-1,-1,-1):
