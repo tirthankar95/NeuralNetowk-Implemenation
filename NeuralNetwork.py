@@ -72,3 +72,6 @@ class NN:
 				else:
 					Atmp=self.sigmoid(np.dot(self.W[i],Atmp)+self.b[i])
 		return Atmp
+
+
+		shdfoashbvah
