@@ -8,3 +8,6 @@ def tanh(Z):
 
 def dsigmoid(A):
 	return A*(1-A)
+
+def dtanh(A):
+	return (1-A**2)
