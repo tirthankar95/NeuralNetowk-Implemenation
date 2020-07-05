@@ -45,7 +45,7 @@ class NN:
 				graph.append(loss)                
 			for i in range(layers-1,-1,-1):
 				if i!=0:
-					# i-th layer (dW,dB,dA) || i-1th layer (dZ)
+					# (i)-th layer (dW,dB,dA) || (i-1)-th layer (dZ)
 					dW=(1/m)*np.dot(dZ,self.A[i-1].T)
 					dB=(1/m)*np.sum(dZ,axis=1,keepdims=True)
 					dA=np.dot(self.W[i].T,dZ)
