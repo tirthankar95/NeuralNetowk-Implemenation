@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import NeuralNetworkHelper as NNH 
 
 class NN:
 	def __init__(self,alpha=0.5,mxIter=1000):
@@ -30,16 +31,10 @@ class NN:
 			self.b.append(btmp)
 		for j in range(self.mxIter):
 			for i in range(layers):
-				if layerInfo[i][1]=='sigmoid':
-					if i==0:
-						Atmp=self.sigmoid(np.dot(self.W[i],Xtr)+self.b[i])
-					else:
-						Atmp=self.sigmoid(np.dot(self.W[i],self.A[i-1])+self.b[i])
-				if layerInfo[i][1]=='tanh':
-					if i==0:
-						Atmp=np.tanh(np.dot(self.W[i],Xtr)+self.b[i])
-					else:
-						Atmp=np.tanh(np.dot(self.W[i],self.A[i-1])+self.b[i])
+				if i==0:
+					Atmp=getattr(NNH,layerInfo[i][1])(np.dot(self.W[i],Xtr)+self.b[i])
+				else:
+					Atmp=getattr(NNH,layerInfo[i][1])(np.dot(self.W[i],self.A[i-1])+self.b[i])
 				self.A.append(Atmp);loss=0
 			if lossFunc=='Quadratic':
 				loss=(1/m)*( ((Ytr-self.A[layers-1])**2).sum() )
@@ -55,7 +50,7 @@ class NN:
 					dW=(1/m)*np.dot(dZ,self.A[i-1].T)
 					dB=(1/m)*np.sum(dZ,axis=1,keepdims=True)
 					dA=np.dot(self.W[i].T,dZ)
-					dZ=np.multiply(dA,self.A[i-1]*(1-self.A[i-1]))
+					dZ=np.multiply(dA,getattr(NNH,"d"+layerInfo[i][1])(self.A[i-1]))
 				else:
 					dW=(1/m)*np.dot(dZ,Xtr.T)
 					dB=(1/m)*np.sum(dZ,axis=1,keepdims=True)                    
